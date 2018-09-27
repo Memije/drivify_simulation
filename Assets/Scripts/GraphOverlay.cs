@@ -10,7 +10,8 @@ using System;
 /// This is a really simple graphing solution for the WheelCollider's friction slips.
 /// </summary> 
 public class GraphOverlay : MonoBehaviour
-{
+{	
+
     [Serializable]
     public class WheelConfig
     {
