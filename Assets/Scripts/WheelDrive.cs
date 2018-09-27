@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 [Serializable]
 public enum DriveType
@@ -29,6 +30,12 @@ public class WheelDrive : MonoBehaviour
 
 	[Tooltip("The vehicle's drive type: rear-wheels drive, front-wheels drive or all-wheels drive.")]
 	public DriveType driveType;
+
+	public GameObject steeringWheel;
+
+	public GameObject speedNeedle;
+
+	public Text txtSpeed;
 
     private WheelCollider[] m_Wheels;
 
@@ -64,6 +71,14 @@ public class WheelDrive : MonoBehaviour
 		float torque = maxTorque * Input.GetAxis("Vertical");
 
 		float handBrake = Input.GetKey(KeyCode.X) ? brakeTorque : 0;
+
+		float rigibodySpeed = GetComponent<Rigidbody>().velocity.magnitude;
+
+		txtSpeed.text = ((int)(rigibodySpeed * 3.6f)).ToString();
+
+		speedNeedle.transform.localRotation = Quaternion.Lerp(speedNeedle.transform.localRotation, Quaternion.AngleAxis(rigibodySpeed * 3.6f * 1.2f, Vector3.back), Time.deltaTime);	
+
+		steeringWheel.transform.localRotation = Quaternion.Lerp(steeringWheel.transform.localRotation, Quaternion.AngleAxis(angle / maxAngle * 90f ,Vector3.back), Time.deltaTime);
 
 		foreach (WheelCollider wheel in m_Wheels)
 		{
